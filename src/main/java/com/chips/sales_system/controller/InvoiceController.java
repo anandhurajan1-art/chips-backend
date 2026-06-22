@@ -19,8 +19,10 @@ public class InvoiceController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('GENERATE_BILL') or hasAuthority('ADMIN') or hasAuthority('VIEW_BILL')")
-    public ResponseEntity<List<InvoiceDto>> getAllInvoices() {
-        return ResponseEntity.ok(invoiceService.getAllInvoices());
+    public ResponseEntity<List<InvoiceDto>> getAllInvoices(
+            @RequestParam(required = false) Long shopId,
+            @RequestParam(required = false) String date) {
+        return ResponseEntity.ok(invoiceService.getAllInvoices(shopId, date));
     }
 
     @GetMapping("/{id}")
@@ -31,8 +33,14 @@ public class InvoiceController {
 
     @PostMapping("/generate/{orderId}")
     @PreAuthorize("hasAuthority('GENERATE_BILL') or hasAuthority('ADMIN')")
-    public ResponseEntity<InvoiceDto> generateInvoice(@PathVariable Long orderId, Authentication authentication) {
+    public ResponseEntity<?> generateInvoice(@PathVariable Long orderId, Authentication authentication) {
         String username = authentication.getName();
-        return ResponseEntity.ok(invoiceService.generateInvoice(orderId, username));
+        try {
+            return ResponseEntity.ok(invoiceService.generateInvoice(orderId, username));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(java.util.Map.of("message", e.getMessage() != null ? e.getMessage() : e.toString()));
+        }
     }
 }

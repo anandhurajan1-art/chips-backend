@@ -28,6 +28,7 @@ public class BranchController {
     public Branch updateBranch(@PathVariable Long id, @RequestBody Branch updatedBranch) {
         return branchRepository.findById(id).map(branch -> {
             branch.setName(updatedBranch.getName());
+            branch.setIsGstBillEnabled(updatedBranch.getIsGstBillEnabled());
             return branchRepository.save(branch);
         }).orElseThrow(() -> new RuntimeException("Branch not found with id " + id));
     }

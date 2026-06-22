@@ -76,6 +76,7 @@ public class ReturnService {
             returnItem.setUnit(invoiceItem.getUnit());
             returnItem.setPrice(invoiceItem.getPrice());
             returnItem.setAmount(itemDto.getAmount());
+            returnItem.setCostPrice(invoiceItem.getCostPrice());
             returnItem.setReason(itemDto.getReason());
 
             returnItemRepository.save(returnItem);

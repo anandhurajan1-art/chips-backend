@@ -36,8 +36,23 @@ public class InvoiceService {
     @Autowired
     private IdGeneratorService idGeneratorService;
 
+    @Autowired
+    private jakarta.persistence.EntityManager entityManager;
+
     public List<InvoiceDto> getAllInvoices() {
         return invoiceRepository.findAll().stream().map(this::mapToDto).collect(Collectors.toList());
+    }
+
+    public List<InvoiceDto> getAllInvoices(Long shopId, String date) {
+        StringBuilder jpql = new StringBuilder("SELECT i FROM Invoice i WHERE 1=1");
+        if (shopId != null) jpql.append(" AND i.shop.id = :shopId");
+        if (date != null && !date.isEmpty()) jpql.append(" AND CAST(i.invoiceDate AS date) = CAST(:date AS date)");
+
+        jakarta.persistence.TypedQuery<Invoice> query = entityManager.createQuery(jpql.toString(), Invoice.class);
+        if (shopId != null) query.setParameter("shopId", shopId);
+        if (date != null && !date.isEmpty()) query.setParameter("date", java.time.LocalDate.parse(date));
+
+        return query.getResultList().stream().map(this::mapToDto).collect(Collectors.toList());
     }
 
     public InvoiceDto getInvoiceById(Long id) {
@@ -74,22 +89,16 @@ public class InvoiceService {
             invoiceItem.setQuantity(orderItem.getQuantity());
             invoiceItem.setUnit(orderItem.getUnit());
             invoiceItem.setPrice(orderItem.getPrice());
+            invoiceItem.setCostPrice(orderItem.getCostPrice());
             invoiceItem.setAmount(orderItem.getAmount());
             invoiceItemRepository.save(invoiceItem);
 
-            // Reduce stock
-            ItemList itemList = orderItem.getItemList();
-            if (itemList != null) {
-                if (itemList.getQuantity() < orderItem.getQuantity()) {
-                    throw new RuntimeException("Insufficient stock for item: " + itemList.getItem().getItemName());
-                }
-                itemList.setQuantity(itemList.getQuantity() - orderItem.getQuantity());
-                itemListRepository.save(itemList);
-            }
         }
 
         order.setStatus(OrderStatus.BILLED);
         orderRepository.save(order);
+        
+        invoiceItemRepository.flush();
 
         return mapToDto(savedInvoice);
     }

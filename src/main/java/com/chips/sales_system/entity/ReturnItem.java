@@ -29,6 +29,8 @@ public class ReturnItem {
 
     private BigDecimal price;
 
+    private BigDecimal costPrice;
+
     private BigDecimal amount;
 
     private String reason;
@@ -47,6 +49,8 @@ public class ReturnItem {
     public void setUnit(String unit) { this.unit = unit; }
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
+    public BigDecimal getCostPrice() { return costPrice; }
+    public void setCostPrice(BigDecimal costPrice) { this.costPrice = costPrice; }
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
     public String getReason() { return reason; }

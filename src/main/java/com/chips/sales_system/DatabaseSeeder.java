@@ -55,7 +55,9 @@ public class DatabaseSeeder implements CommandLineRunner {
             new String[]{"View Return Report", "VIEW_RETURN_REPORT"},
             new String[]{"Item-wise Return Report", "ITEM_WISE_RETURN_REPORT"},
             new String[]{"Shop-wise Return Report", "SHOP_WISE_RETURN_REPORT"},
-            new String[]{"Download Return Report PDF", "DOWNLOAD_RETURN_REPORT_PDF"}
+            new String[]{"Download Return Report PDF", "DOWNLOAD_RETURN_REPORT_PDF"},
+            new String[]{"View Settings", "VIEW_SETTINGS"},
+            new String[]{"View Item Count Report", "VIEW_ITEM_COUNT_REPORT"}
         );
 
         for (String[] p : privileges) {

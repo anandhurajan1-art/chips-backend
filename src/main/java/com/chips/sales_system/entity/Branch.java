@@ -10,8 +10,12 @@ public class Branch {
 
     private String name;
 
+    private Boolean isGstBillEnabled;
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
+    public Boolean getIsGstBillEnabled() { return isGstBillEnabled; }
+    public void setIsGstBillEnabled(Boolean isGstBillEnabled) { this.isGstBillEnabled = isGstBillEnabled; }
 }

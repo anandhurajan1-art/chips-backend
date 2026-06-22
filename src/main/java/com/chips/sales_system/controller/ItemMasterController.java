@@ -22,8 +22,15 @@ public class ItemMasterController {
     }
 
     @PostMapping
-    public ItemMaster createItem(@RequestBody ItemMaster item) {
-        return itemMasterRepository.save(item);
+    public org.springframework.http.ResponseEntity<?> createItem(@RequestBody ItemMaster item) {
+        if (item.getBranch() != null && item.getItemName() != null) {
+            List<ItemMaster> existing = itemMasterRepository.findByBranchId(item.getBranch().getId());
+            boolean exists = existing.stream().anyMatch(i -> i.getItemName().equalsIgnoreCase(item.getItemName()));
+            if (exists) {
+                return org.springframework.http.ResponseEntity.badRequest().body("Item with this name already exists in the selected branch");
+            }
+        }
+        return org.springframework.http.ResponseEntity.ok(itemMasterRepository.save(item));
     }
 
     @PutMapping("/{id}")

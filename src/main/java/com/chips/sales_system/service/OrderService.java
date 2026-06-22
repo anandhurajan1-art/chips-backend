@@ -76,6 +76,7 @@ public class OrderService {
             item.setQuantity(itemDto.getQuantity());
             item.setUnit(itemDto.getUnit());
             item.setPrice(itemDto.getPrice());
+            item.setCostPrice(itemList.getCostPrice());
             item.setAmount(itemDto.getAmount());
             orderItemRepository.save(item);
         }
@@ -110,6 +111,7 @@ public class OrderService {
             item.setQuantity(itemDto.getQuantity());
             item.setUnit(itemDto.getUnit());
             item.setPrice(itemDto.getPrice());
+            item.setCostPrice(itemList.getCostPrice());
             item.setAmount(itemDto.getAmount());
             orderItemRepository.save(item);
         }

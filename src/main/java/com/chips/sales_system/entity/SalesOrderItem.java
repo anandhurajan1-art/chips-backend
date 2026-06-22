@@ -28,6 +28,8 @@ public class SalesOrderItem {
 
     private BigDecimal price;
 
+    private BigDecimal costPrice;
+
     private BigDecimal amount;
 
     public Long getId() { return id; }
@@ -44,6 +46,8 @@ public class SalesOrderItem {
     public void setUnit(String unit) { this.unit = unit; }
     public BigDecimal getPrice() { return price; }
     public void setPrice(BigDecimal price) { this.price = price; }
+    public BigDecimal getCostPrice() { return costPrice; }
+    public void setCostPrice(BigDecimal costPrice) { this.costPrice = costPrice; }
     public BigDecimal getAmount() { return amount; }
     public void setAmount(BigDecimal amount) { this.amount = amount; }
 }

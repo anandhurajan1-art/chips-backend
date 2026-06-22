@@ -11,6 +11,8 @@ public class Shop {
     private String name;
     private String place;
     private String phoneNumber;
+    private String gstNumber;
+    private String gstDetails;
 
     @ManyToOne
     @JoinColumn(name = "branch_id")
@@ -24,6 +26,10 @@ public class Shop {
     public void setPlace(String place) { this.place = place; }
     public String getPhoneNumber() { return phoneNumber; }
     public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public String getGstNumber() { return gstNumber; }
+    public void setGstNumber(String gstNumber) { this.gstNumber = gstNumber; }
+    public String getGstDetails() { return gstDetails; }
+    public void setGstDetails(String gstDetails) { this.gstDetails = gstDetails; }
     public Branch getBranch() { return branch; }
     public void setBranch(Branch branch) { this.branch = branch; }
 }
