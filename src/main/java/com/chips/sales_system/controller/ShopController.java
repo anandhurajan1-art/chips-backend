@@ -6,7 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.UUID;
 @RestController
 @RequestMapping("/api/shops")
 public class ShopController {
@@ -41,6 +46,27 @@ public class ShopController {
     @DeleteMapping("/{id}")
     public void deleteShop(@PathVariable Long id) {
         shopRepository.deleteById(id);
+    }
+
+    @PostMapping("/{id}/image")
+    public org.springframework.http.ResponseEntity<?> uploadShopImage(@PathVariable Long id, @RequestParam("image") MultipartFile image) {
+        try {
+            Shop shop = shopRepository.findById(id).orElseThrow(() -> new RuntimeException("Shop not found"));
+            String uploadDir = "uploads/shops/";
+            Path uploadPath = Paths.get(uploadDir);
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+            Path filePath = uploadPath.resolve(fileName);
+            Files.copy(image.getInputStream(), filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            
+            shop.setShopImageUrl("/uploads/shops/" + fileName);
+            shopRepository.save(shop);
+            return org.springframework.http.ResponseEntity.ok(shop);
+        } catch (IOException e) {
+            return org.springframework.http.ResponseEntity.status(500).body("Error uploading image: " + e.getMessage());
+        }
     }
 
     @GetMapping("/{id}/most-ordered-items")

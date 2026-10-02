@@ -72,7 +72,7 @@ public class OrderService {
             item.setOrder(savedOrder);
             ItemList itemList = itemListRepository.findById(itemDto.getItemListId()).orElseThrow(() -> new RuntimeException("Item not found"));
             item.setItemList(itemList);
-            item.setItemName(itemDto.getItemName());
+            item.setItemName(itemList.getItem().getItemName());
             item.setQuantity(itemDto.getQuantity());
             item.setUnit(itemDto.getUnit());
             item.setPrice(itemDto.getPrice());
@@ -107,7 +107,7 @@ public class OrderService {
             item.setOrder(savedOrder);
             ItemList itemList = itemListRepository.findById(itemDto.getItemListId()).orElseThrow(() -> new RuntimeException("Item not found"));
             item.setItemList(itemList);
-            item.setItemName(itemDto.getItemName());
+            item.setItemName(itemList.getItem().getItemName());
             item.setQuantity(itemDto.getQuantity());
             item.setUnit(itemDto.getUnit());
             item.setPrice(itemDto.getPrice());
